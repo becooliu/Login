@@ -83,3 +83,13 @@ Vue.prototype.checkLogin = function () {
     this.$router.push('/user_info');
   }
 }
+
+//扩展校验是否是手机号和邮箱的方法
+Vue.prototype.IsMobile = function (m) {
+  var p = /^1[3456789][0-9]{9}$/gi;
+  return p.test(m);
+}
+Vue.prototype.IsEmail = function(email){
+var p = /\s*\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*\s*/;
+return p.test(email);
+}

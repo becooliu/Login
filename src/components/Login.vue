@@ -42,34 +42,25 @@ export default {
   },
   methods: {
     userLogin: function() {
-		//简单检验用户名和密码是否为空
-		if(this.username == '' || this.password == '') {
-			window.alert('用户名或密码不能为空。')
-			return;
-		}
+      //简单检验用户名和密码是否为空
+      if (this.username == "" || this.password == "") {
+        window.alert("用户名或密码不能为空。");
+        return;
+      }
 
-		var userData = {
-			username: this.username,
-			password: this.password,
-			isAdmin: false
-		};
+      var userData = {
+        username: this.username,
+        password: this.password,
+        isAdmin: false
+      };
       this.$http
-        .post("/api/login/createAccount", userData, { emulateJSON: true })
+        .post("/api/login/getAccount", userData, { emulateJSON: true })
         .then(
           res => {
-            /* var data = res.body;
-          if (data.code == 1) {
-            if (
-              data.username == this.username &&
-              data.password == this.password
-            ) {
-              this.setCookie("session", this.username, 1);
-              this.$router.push({ name: "UserInfo" });
-            } else {
-              alert("帐号或密码错误，请确认");
-            }
-		  } */
             switch (res.body.code) {
+              case "0":
+                window.alert("登录失败，请联系系统管理员。");
+                break;
               case "1":
                 window.alert("该帐号已注册");
                 this.$refs.username.focus();
@@ -77,6 +68,12 @@ export default {
               case "2":
                 this.setCookie("userSession", this.username, 1);
                 this.$router.push({ name: "UserInfo" });
+                break;
+              case "3":
+                window.alert("帐号或密码错误，请确认。");
+                break;
+              case "4":
+                window.alert("帐号不存在，请确认。");
                 break;
               default:
                 window.alert("登录失败");

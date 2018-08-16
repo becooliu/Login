@@ -13,15 +13,18 @@ var responseData = {}; //统一的返回数据
 router.post('/api/login/createAccount' , (req, res) => {
     
 
-    //查询是否有没有已存在的用户名
+    //查询是否有已存在的用户名
     models.login.findOne({username: req.body.username},function(error, userInfo) {
         if (error) { //如果查询失败
-            return next(error);
+            responseData.code = 'error';
+            responseData.message = '查询错误，操作失败。'
+            res.json(responseData);
+            //return;
         }else if(userInfo){ //如果查询返回了数据，则数据库中已存在此用户名
             responseData.code = "1";
             responseData.message = '该帐号已注册';
             res.json(responseData);
-            return;
+            //return;
         }else { //如果数据库中没有此帐号，则将此用户数据插入到数据库中
 
             //req.body 之所以通用，是因为在index.js 中引入了 const bodyParser = require('body-parser')
@@ -57,42 +60,36 @@ router.post('/api/login/createAccount' , (req, res) => {
         }
     }) */
     /*************************************************/
-    /* models.login.findOne({username: req.body.username}, function(err, userInfo) {
-        if(err) {
-            responseData.code = 'error';
-            responseData.message = '查询错误，操作失败。'
-            res.send(res.json(responseData));
-            return;
-        }else {
-            if (userInfo) {
-                responseData.code = 1;
-                responseData.message = '该帐号已注册';
-                res.json(responseData);
-                return;
-            }
-            //把数据 newAccount 保存到mongodb 
-            newAccount.save((err , data) => {
-                if( err ) {
-                    res.send(err)
-                }else {
-                    responseData.code = 2;
-                    responseData.message = "帐号注册成功。";
-                    
-                    res.send(res.json(responseData));
-                }
-            })
-        }
-    }) */
     
 })
 
-router.get('/api/login/getAccount' , (req , res) => {
+//帐号登录接口
+router.post('/api/login/getAccount' , (req , res) => {
+    
     //通过模型去查找数据库
-    models.login.find( (err , data) => {
-        if( err ) {
-            res.send( err )
+    models.login.findOne({username: req.body.username}, function(error , data) {
+        if( error ) {
+            responseData.code = "0";
+            responseData.message = "登录失败，请联系管理员。";
+            res.json(responseData);
+        }else if(data) {
+            let loginAccount = {
+                username: req.body.username,
+                password: req.body.password
+            }
+            if(loginAccount.username == data.username && loginAccount.password == data.password) {
+                responseData.code = "2";
+                responseData.message = "登录成功";
+                res.json(responseData);
+            }else {
+                responseData.code = "3";
+                responseData.message = "帐号或密码错误，请确认。"
+                res.json(responseData);
+            }
         }else {
-            res.send(data)
+            responseData.code = "4";
+            responseData.message = "帐号不存在，请确认。"
+            res.json(responseData);
         }
     })
 })

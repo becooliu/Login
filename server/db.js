@@ -8,7 +8,7 @@ const db = mongoose.connection;
 db.once('error', ()=>console.log('database connect error.'));
 db.once('open' , ()=> console.log('Mongo connect success .'));
 
-/**定义模式loginSchema**/
+/**定义登录模式loginSchema**/
 const loginSchema = mongoose.Schema({
     username: String,
     password: String,
