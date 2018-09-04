@@ -8,6 +8,7 @@ import router from './router'
 import Login from '../src/components/Login.vue'
 import UserInfo from '../src/components/UserInfo.vue'
 import Register from '../src/components/Register.vue'
+import PostImg from '../src/components/PostImg.vue'
 
 import store from './store.js'
 

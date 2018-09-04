@@ -12,6 +12,7 @@ db.once('open' , ()=> console.log('Mongo connect success .'));
 const loginSchema = mongoose.Schema({
     username: String,
     password: String,
+    avatar: String,
     isAdmin: {
         type: Boolean,
         default: false

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '../components/Login.vue'
 import UserInfo from '../components/UserInfo.vue'
 import Register from '../components/Register.vue'
+import PostImg from '../components/PostImg.vue'
 
 Vue.use(Router)
 
@@ -19,7 +20,7 @@ export default new Router({
       component: Login
     },
     {
-      path: '/user_info',
+      path: '/userInfo',
       name: 'UserInfo',
       component: UserInfo
     },
@@ -27,6 +28,11 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
+    },
+    {
+      path: '/postimg',
+      name: 'PostImg',
+      component: PostImg
     }
   ]
 })

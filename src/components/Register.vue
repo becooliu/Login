@@ -4,7 +4,7 @@
             <h2>用户注册</h2>
         </div>
         <div class="panel_body">
-            <form action="">
+            <form action="" enctype="multipart/form-data">
                 
                 <div class="field clearfix">
                     <label for="" class="required">用户名：</label><input type="text" v-model="username" placeholder="请输入您的手机号/邮箱" name="username" ref="username">
@@ -36,10 +36,12 @@
                 username: '',
                 password: '',
                 password2: '',
+                avatar: null,
                 isAdmin: false
             }
         },
         methods: {
+
             userRegist(){
                 //进行简单的注册前的检验
                 //检查用户名/密码/确认密码是否为空
@@ -61,14 +63,15 @@
                 let userData = {
                     username: this.username,
                     password: this.password,
+                    avatar: this.avatar,
                     isAdmin: false
                 }
-                this.$http.post('/api/login/createAccount', userData, {emulateJSON: true})
+                this.$http.post('/api/login/createAccount', userData, {headers:{'Content-Type':'multipart/form-data'},emulateJSON: true})
                 .then(
                     (res) => {
                         switch (res.body.code) {
                             case "error":
-                                window.alert('查询错误，操作失败。');
+                                window.alert(res.body.message);
                                 break;
                             case "1":
                                 window.alert(res.body.message);
@@ -91,6 +94,13 @@
                     return true
                 }
             },
+            getImgUrl(e){
+                e = e || window.event;
+                var files = e.target.files || e.dataTransfer.files;
+                if(!files.length) return;
+                this.avatar =files[0];
+                //console.log(this.$refs.avatar.files[0]);
+            }
         }
     }
 </script>

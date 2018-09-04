@@ -7,12 +7,15 @@ const router = express.Router();
 
 var responseData = {}; //统一的返回数据
 
+//node 中图片的接收
+
+
 /************** 创建(create) 读取(get) 更新(update) 删除(delete) **************/
 
 //创建帐号接口
 router.post('/api/login/createAccount' , (req, res) => {
     
-
+    //res.send(req.body.files);
     //查询是否有已存在的用户名
     models.login.findOne({username: req.body.username},function(error, userInfo) {
         if (error) { //如果查询失败
@@ -47,19 +50,6 @@ router.post('/api/login/createAccount' , (req, res) => {
             })
         }
     })
-    /*************************************************/
-    //把数据 newAccount 保存到mongodb 
-    /* newAccount.save((err , data) => {
-        if( err ) {
-            res.send(err)
-        }else {
-            responseData.code = 2;
-            responseData.message = "帐号注册成功。";
-            
-            res.send(res.json(responseData));
-        }
-    }) */
-    /*************************************************/
     
 })
 
@@ -91,6 +81,25 @@ router.post('/api/login/getAccount' , (req , res) => {
             responseData.message = "帐号不存在，请确认。"
             res.json(responseData);
         }
+    })
+})
+
+//上传图片并保存
+router.post('/api/uploadImg/getImg' , (req, res) => {
+    let avatar = req.files.avatar; //获取前端上传的文件对象
+    avatar.mv('../public/Uploads/images/'+avatar.name, function(err) { //avatar.mv 是express 自带的文件操作方法
+        if(err) {
+            responseData={
+                message: "图片上传失败",
+                code: error
+            }
+            return res.json(responseData)
+        }
+        responseData = {
+            message: '图片上传成功！',
+            code: '2'
+        }
+        res.json(responseData);
     })
 })
 
