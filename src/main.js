@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import App from './App'
 import VueResource from 'vue-resource'
 import router from './router'
+import  './assets/bootstrap-3.3.7-dist/css/bootstrap.min.css'
 import Login from '../src/components/Login.vue'
 import UserInfo from '../src/components/UserInfo.vue'
 import Register from '../src/components/Register.vue'
@@ -47,7 +48,7 @@ new Vue({
 
 //设置cookie,增加到vue实例方便全局调用
 //vue全局调用的理由是，有些组件所用到的接口可能需要session验证，session从cookie获取
-//当然，如果session保存到vuex的话除外
+//如果session保存到vuex的话除外
 Vue.prototype.setCookie = function (cookieName, cookieValue, expireDays) {
   var exdate = new Date();
   exdate.setDate(exdate.getDate() + expireDays);

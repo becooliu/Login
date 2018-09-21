@@ -1,5 +1,8 @@
 <template>
   <div class="container" id="app">
+    <div class="log-out" v-if="isLogin">
+      <a href="javascript:void(0);" class="btn btn-default">退出登录</a>
+    </div>
     <transition name="fade">
       <keep-alive>
         <router-view/>
@@ -11,7 +14,17 @@
 <script>
 export default {
   name: "App",
+  data(){
+    return {
+      isLogin: false
+    }
+  },
   methods: {
+    checkIsLogin(){
+      if(this.getCookie('userSession')){
+        this.isLogin = true
+      }
+    }
     /* setCookie(c_name, value, expiredays) {
       var exdate = new Date();
       exdate.setDate(exdate.getDate() + expiredays);
@@ -28,7 +41,10 @@ export default {
       if (cval != null)
         document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
     } */
-  }
+  },
+  mounted() {
+    this.checkIsLogin;
+  },
 };
 </script>
 

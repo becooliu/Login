@@ -63,13 +63,20 @@ router.post('/api/login/getAccount' , (req , res) => {
             responseData.message = "登录失败，请联系管理员。";
             res.json(responseData);
         }else if(data) {
+            console.log(data);
+
             let loginAccount = {
                 username: req.body.username,
                 password: req.body.password
             }
             if(loginAccount.username == data.username && loginAccount.password == data.password) {
-                responseData.code = "2";
-                responseData.message = "登录成功";
+                /* responseData.code = "2";
+                responseData.message = "登录成功"; */
+                
+                responseData = {
+                    code: "2",
+                    message: "登录成功。"
+                }
                 res.json(responseData);
             }else {
                 responseData.code = "3";
@@ -82,24 +89,46 @@ router.post('/api/login/getAccount' , (req , res) => {
             res.json(responseData);
         }
     })
+    responseData = {};
 })
 
 //上传图片并保存
-router.post('/api/uploadImg/getImg' , (req, res) => {
+router.post('/api/uploadImg/postImg' , (req, res) => {
     let avatar = req.files.avatar; //获取前端上传的文件对象
-    avatar.mv('../public/Uploads/images/'+avatar.name, function(err) { //avatar.mv 是express 自带的文件操作方法
+    let userName = req.body.userSession;
+    // console.log('avatar='+req.files.avatar);
+    // console.log('avatar.name='+req.files.avatar.name);
+    
+    avatar.mv('../static/Uploads/images/'+avatar.name, function(err) { //avatar.mv 是express 自带的文件操作方法
         if(err) {
             responseData={
-                message: "图片上传失败",
-                code: error
+                message: "修改失败，请联系系统管理员。",
+                code: "error"
             }
             return res.json(responseData)
         }
-        responseData = {
-            message: '图片上传成功！',
-            code: '2'
-        }
-        res.json(responseData);
+        //更新数据库中的指定的值
+        var temp_imgType = avatar.name.split('.');
+        //var imgType = temp_imgType[temp_imgType.length-1];
+        const condition = {username: userName};
+        let update = {$set: {avatar: '../static/Uploads/images/'+avatar.name}};
+        models.login.update(condition, update, function(error){
+            if (error) {
+                responseData = {
+                    message: error,
+                    code: 'error'
+                }
+            }else {
+                responseData = {
+                    message: "图片上传成功！",
+                    code: "200",
+                    imgSrc: "../static/Uploads/images/"+avatar.name
+                }
+                
+                console.log("server res img="+responseData.imgSrc);
+            }
+            res.json(responseData);
+        })
     })
 })
 
