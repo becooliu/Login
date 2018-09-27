@@ -19,6 +19,11 @@ const loginSchema = mongoose.Schema({
     }
 })
 
+/* const resetPasswordSchema = mongoose.Schema({
+    username: String,
+    password: String
+}) */
+
 //定义模型
 const Models = {
     login: mongoose.model('users',loginSchema)

@@ -2,10 +2,12 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import Vuex from 'vuex'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import VueResource from 'vue-resource'
 import router from './router'
-import  './assets/bootstrap-3.3.7-dist/css/bootstrap.min.css'
+//import  './assets/bootstrap-3.3.7-dist/css/bootstrap.min.css'
 import Login from '../src/components/Login.vue'
 import UserInfo from '../src/components/UserInfo.vue'
 import Register from '../src/components/Register.vue'
@@ -15,6 +17,7 @@ import store from './store.js'
 
 Vue.config.productionTip = false
 
+Vue.use(ElementUI)
 Vue.use(VueResource)
 Vue.use(Vuex)
 

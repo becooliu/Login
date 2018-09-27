@@ -16,8 +16,11 @@ const app = express();
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 
+//解析 application/json
 app.use(bodyParser.json());
+//解析 application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}));
+
 //app.use(express.bodyParser({uploadDir: '../public/Uploads/images'}));
 app.use(api);
 //app.use(postImg);

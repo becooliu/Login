@@ -25,7 +25,7 @@
 				</div>
 				
 				<div class="field field_btn clearfix" style="text-align: center;">
-					<a href="javascript:void(0);" class="btn btn_login2" @click="postImg">提交</a>
+					<a href="javascript:void(0);" class="btn btn-default btn_login2" @click="postImg">提交</a>
 				</div>
 				
 				
@@ -95,15 +95,14 @@ export default {
 			this.$http
 				.post("/api/uploadImg/postImg", formData)
 				.then(res => {
-					console.log("返回："+res.body.imgSrc);
-					//console.log(' this.resImgSrc='+ this.resImgSrc);
+					
 					this.resImgSrc = res.body.imgSrc;
 					//this.styleObject.backgroundImage = "url("+res.body.imgSrc+");"
 					
 					//console.log(this.styleObject.backgroundImage);
-					localStorage.userInfo = {
-						userFace: res.body.imgSrc
-					}
+					localStorage.userface = res.body.imgSrc;
+					
+					//console.log(localStorage.userInfo);
 					window.alert(res.body.message);
 				})
 				.catch(err => {
@@ -125,7 +124,7 @@ export default {
 	},
 	mounted() {
 		this.getUserInfo();
-		this.resImgSrc = localStorage.userInfo.userFace;
+		this.resImgSrc = localStorage.userface;
 		//console.log(this.resImgSrc);
 	}
 };

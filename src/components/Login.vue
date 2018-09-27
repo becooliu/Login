@@ -5,7 +5,22 @@
             <!-- <p>10036信手通平台，欢迎您</p> -->
         </div>
         <div class="panel_body">
-            <form id="loginForm" action="">
+          <el-form ref="form" label-position="right" label-width="80px">
+            <el-form-item label="用户名：">
+              <el-input v-model="username" name="username" ref="username" placeholder="请输入正确的手机号/帐号"></el-input>
+            </el-form-item>
+            <el-form-item label="密码：">
+              <el-input v-model="password" name="password" ref="password" placeholder="请输入正确的密码" type="password"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <router-link tag="a" to="/register" v-bind:class="style.apply">没有帐号？<span :class="style.orange">快速注册</span></router-link>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="userLogin">登录</el-button>
+              <el-button>忘记密码</el-button>
+            </el-form-item>
+          </el-form>
+            <!-- <form id="loginForm" action="">
                 <div class="field clearfix">
                     <label for="" class="required">用户名：</label><input type="text" placeholder="请输入正确的手机号/帐号" name="username" v-model="username" ref="username">
                 </div>
@@ -14,7 +29,7 @@
                 </div>
                 <div class="field clearfix">
                   <router-link tag="a" to="/register" v-bind:class="style.apply">没有帐号？<span :class="style.orange">快速注册</span></router-link>
-                    <!-- <a class="apply" >没有帐号？<span class="orange">免费申请</span></a> -->
+                    
                 </div>
                 <div class="field field_btn clearfix" style="text-align: center;">
                     <a href="javascript:void(0);" class="btn btn_login2" @click="userLogin">登录</a>
@@ -22,7 +37,7 @@
                     <a href="javascript:void(0);" style="text-align: right;" class="forget">忘记密码</a>
                 </div>
                 
-            </form>
+            </form> -->
         </div>
     </div>
 </template>
@@ -67,10 +82,15 @@ export default {
                 break;
               case "2":
                 this.setCookie("userSession", this.username, 1);
+                //登录成功，修改state及写入localStorage
+                this.$store.commit('$_setStorage',this.username); 
+                //localStorage.username = this.username;
                 this.$router.push({ name: "UserInfo" });
                 break;
               case "3":
                 window.alert("帐号或密码错误，请确认。");
+                //登录失败删除localStorage并修改state
+                this.$store.commit('$_removeStorage')
                 break;
               case "4":
                 window.alert("帐号不存在，请确认。");

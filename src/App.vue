@@ -1,14 +1,29 @@
 <template>
-  <div class="container" id="app">
-    <div class="log-out" v-if="isLogin">
-      <a href="javascript:void(0);" class="btn btn-default">退出登录</a>
+  <div id="app">
+    <el-row>
+      <div class="log-out" v-if="getLoginStatus">
+        <el-button @click="logout">退出登录</el-button>
+      </div>
+    </el-row>
+    <el-row>
+      <transition name="fade">
+        <keep-alive>
+          <router-view/>
+        </keep-alive>
+      </transition>
+    </el-row>
+
+  </div>
+  <!-- <div class="container" id="app">
+    <div class="log-out" v-if="getLoginStatus">
+      <a href="javascript:void(0);" class="btn btn-default" @click="logout">退出登录</a>
     </div>
     <transition name="fade">
       <keep-alive>
         <router-view/>
       </keep-alive>
     </transition>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -19,32 +34,44 @@ export default {
       isLogin: false
     }
   },
+  computed: {
+    getLoginStatus(){
+      return this.$store.getters.getStorage;
+    }
+  },
   methods: {
     checkIsLogin(){
-      if(this.getCookie('userSession')){
+      /* if(this.$store.getters.getStorage) (
+        console.log('')
+      ) */
+      /* if(this.getCookie('userSession')){
         this.isLogin = true
+      } */
+    },
+    getCookie(name){
+      var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"))
+      if(arr != null) {
+        return unescape(arr[2])
       }
-    }
-    /* setCookie(c_name, value, expiredays) {
-      var exdate = new Date();
-      exdate.setDate(exdate.getDate() + expiredays);
-      document.cookie =
-        c_name +
-        "=" +
-        escape(value) +
-        (expiredays == null ? "" : ";expires=" + exdate.toGMTString());
+      return null;
     },
     delCookie(name) {
       var exp = new Date();
       exp.setTime(exp.getTime() - 1);
-      var cval = getCookie(name);
+      var cval = this.getCookie(name);
       if (cval != null)
-        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
-    } */
-  },
+        document.cookie = name + "=" + cval + ";path=/;expires=" + exp.toGMTString();
+    },
+    logout(){
+      this.delCookie('userSession');
+      this.$router.push({'name':'Login'});
+      this.$store.commit('$_removeStorage');
+      this.isLogin = false;
+    }
+  }/* ,
   mounted() {
-    this.checkIsLogin;
-  },
+    this.checkIsLogin();
+  }, */
 };
 </script>
 
