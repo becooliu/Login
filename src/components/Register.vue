@@ -40,8 +40,8 @@
                     <a href="javascript:void(0);" class="btn btn_login2" @click="userRegist">注册</a>
                 </div>
                 <div class="field clearfix" style="margin-top: 0px; color: #666;">
-                    <input type="checkbox" name="agree">我已经阅读《XX平台用户协议》 已有账号 ? 
-                    <router-link to="/login" tag="a" style="color: #0274f1;">登录</router-link>
+                    <input type="checkbox" name="agree">我已经阅读《XX平台用户协议》 
+                    <router-link to="/login" tag="a" style="color: #0274f1;"> 已有账号?登录</router-link>
                 </div>
             </form>
         </div> -->
