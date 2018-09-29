@@ -132,4 +132,25 @@ router.post('/api/uploadImg/postImg' , (req, res) => {
     })
 })
 
+//修改密码
+router.post('/api/resetpass', (req , res) => {
+    let userData = req.body;
+    const condition = {username: userData.username};
+    let update = {$set: {password: userData.password}};
+    models.login.update(condition, update, function(error) {
+        if (error) {
+            responseData = {
+                message: error,
+                code: 'error'
+            }
+        }else {
+            responseData = {
+                message: '密码修改成功',
+                code: '200'
+            }
+        }
+        res.json(responseData)
+    })
+})
+
 module.exports = router;

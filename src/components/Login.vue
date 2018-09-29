@@ -17,7 +17,8 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="userLogin">登录</el-button>
-              <el-button>忘记密码</el-button>
+              <router-link tag="a" to="/reset" style="margin-left: 15px; color: #999;">忘记密码</router-link>
+              <!-- <el-button>忘记密码</el-button> -->
             </el-form-item>
           </el-form>
             <!-- <form id="loginForm" action="">
