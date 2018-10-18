@@ -5,6 +5,7 @@ import UserInfo from '../components/UserInfo.vue'
 import Register from '../components/Register.vue'
 import PostImg from '../components/PostImg.vue'
 import Reset from '../components/Reset.vue'
+import AddUser from '../components/sysadmin/AddUser.vue'
 
 Vue.use(Router)
 
@@ -39,6 +40,11 @@ export default new Router({
       path: '/reset',
       name: 'Reset',
       component: Reset
+    },
+    {
+      path: '/sysadmin/adduser',
+      name: 'AddUser',
+      component: AddUser
     }
   ]
 })

@@ -22,7 +22,7 @@ Vue.use(VueResource)
 Vue.use(Vuex)
 
 /* eslint-disable no-new */
-new Vue({
+const vm = new Vue({
   el: '#app',
   router,
   components: {
@@ -48,6 +48,37 @@ new Vue({
   } */
 })
 
+/*router.beforeEach((to, from, next) => {
+  //是否登录
+  let isLogin = function(){
+    return vm.$db.get('tooken')
+  }
+  if(to.path === "/login" && !isLogin()) {
+    //没有登录是/login
+    return next()
+  }else if(!isLogin()){
+    //没有登录不是/login
+    return next({path: '/login'})
+  }else {
+    //登录不是/login
+    let rule = vm.$db.get('rule')
+    let asignRule = Common.asignRouter(rule);
+    for(let i in asignRule) {
+      if(asignRule[i] instanceof Object) {
+        if(asignRule[i].path === to.path) {
+          return next()
+        }
+      }
+    }
+  }
+  return next({path: '/error'})
+})
+let tooken = vm.$db.get('tooken')
+if(tooken) {
+  let rule = vm.$db.get('rule');
+  // 获取路由
+  Common.addRouters(router,rule);
+}*/
 
 //设置cookie,增加到vue实例方便全局调用
 //vue全局调用的理由是，有些组件所用到的接口可能需要session验证，session从cookie获取

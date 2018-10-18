@@ -153,4 +153,47 @@ router.post('/api/resetpass', (req , res) => {
     })
 })
 
+/***************管理员相关API******************/
+//管理员添加用户
+router.post('/api/sysadmin/adduser', (req , res) => {
+    let userData = req.body;
+    let condition = {username: userData.username};
+    models.login.findOne(condition, (err, user) => {
+        //如果查询发生错误
+        if(err) {
+            responseData = {
+                code: 'error',
+                message: '数据库连接错误，操作未完成。'
+            }
+            
+        //如果查询成功，但返回了用户数据，表明数据库中已有相同名称的用户了
+        }else if(user) {
+            responseData = {
+                code: '1',
+                message: '该帐号已注册'
+            }
+        }else {
+            let newUser = new models.login({
+                username: userData.username,
+                password: userData.password,
+                isAdmin: userData.isAdmin
+            })
+            newUser.save((err, resp) => {
+                if(err) {
+                    responseData = {
+                        code: 'error',
+                        message: '新增用户失败，请重试。'
+                    }
+                }else {
+                    responseData = {
+                        code: '2',
+                        message: '新增用户成功'
+                    }
+                }
+            })
+        }
+        res.json(responseData);
+    })
+})
+
 module.exports = router;

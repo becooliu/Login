@@ -21,11 +21,13 @@
 				:http-request="uploadImg"
 				:show-file-list="false"
 				:auto-upload="false" 
+				:on-change="showFileName" 
 				:on-success="handleAvatarSuccess"
 				:before-upload="beforeAvatarUpload">
 				
 				<i v-if="!resImgSrc" class="el-icon-plus avatar-uploader-icon"></i>
-				<el-button slot="trigger" type="primary" size="small">选取文件</el-button>
+				<el-button slot="trigger" type="primary" size="small">选取图片</el-button>
+				<span>{{toUploadFileName}}</span>
 				<el-button type="success" size="small" style="margin-left: 15px;" @click="submitUpload">上传图片</el-button>
 			</el-upload>
 		</div>
@@ -46,6 +48,7 @@ export default {
 			sessionName: "session",
 			userData: "",
 			resImgSrc: '../static/0a.img1.jpg',
+			toUploadFileName: ''
 			/* styleObject: {
 				backgroundImage: "url(../static/0a.img1.jpg);"
 			} */
@@ -68,7 +71,7 @@ export default {
 			const isIMG = file.type.indexOf('image/') > -1;
 			const isLmt2Mb = file.size /1024 /1024 < 2;
 			if(!isIMG) {
-				this.$message.error('上传图片只能是图片格式！');
+				this.$message.error('只能上传图片格式！');
 			}
 			if(!isLmt2Mb) {
 				this.$message.error('上传头像图片大小不能超过 2MB!')
@@ -82,9 +85,20 @@ export default {
 			this.delCookie(this.sessionName);
 			this.checkLogin();
 		},
-		
+		validateFile(file , fileList){
+			//console.log(file.raw); //file.raw 获取未经处理过的文件对象
+			return file.raw.type.indexOf('image/') > -1;
+		},
+		showFileName(file , filelist) {
+			if(this.validateFile(file , filelist) == false) {
+				this.$message.error('只能上传图片格式！');
+				return false;
+			}
+			this.toUploadFileName = file.name;
+		},
 		changeAvatar(event) {
 			var imgs = event.target.files || event.dataTransfer.files;
+			console.log(imgs.name);
 			if (!imgs.length) return; //判断图片是否为空
 
 			this.avatar = imgs[0];
@@ -101,7 +115,7 @@ export default {
 		},
 		uploadImg(param){ //使用element-ui 自定义上传
 			//
-			if(!this.beforeAvatarUpload) {
+			if(this.beforeAvatarUpload == false) {
 				return
 			}
 			var username = this.getCookie('userSession');
