@@ -6,6 +6,7 @@ import Register from '../components/Register.vue'
 import PostImg from '../components/PostImg.vue'
 import Reset from '../components/Reset.vue'
 import AddUser from '../components/sysadmin/AddUser.vue'
+import FindUser from '../components/sysadmin/FindUser.vue'
 
 Vue.use(Router)
 
@@ -45,6 +46,11 @@ export default new Router({
       path: '/sysadmin/adduser',
       name: 'AddUser',
       component: AddUser
+    },
+    {
+      path: '/sysadmin/finduser',
+      name: 'FindUser',
+      component: FindUser
     }
   ]
 })

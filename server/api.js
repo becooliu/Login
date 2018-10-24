@@ -63,7 +63,7 @@ router.post('/api/login/getAccount' , (req , res) => {
             responseData.message = "登录失败，请联系管理员。";
             res.json(responseData);
         }else if(data) {
-            console.log(data);
+            //console.log(data);
 
             let loginAccount = {
                 username: req.body.username,
@@ -191,6 +191,30 @@ router.post('/api/sysadmin/adduser', (req , res) => {
                     }
                 }
             })
+        }
+        res.json(responseData);
+    })
+})
+
+//管理员查询用户
+router.get('/api/sysadmin/getuser/:username' , (req, res) => {
+    let userData = req.params;
+    //console.log(req.params.username);
+    //console.log(userData.username);
+    //res.json(userData);
+
+    models.login.findOne(userData ,{username: 1, isAdmin: 1}, (err, userdata) => {
+        if( err) {
+            responseData = {
+                code: 'error',
+                message: '数据查询失败，请稍后再试。'
+            }
+        }else {
+            responseData = {
+                code: 'success',
+                message: '查询成功',
+                data: userdata
+            }
         }
         res.json(responseData);
     })

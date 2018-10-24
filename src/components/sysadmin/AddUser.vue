@@ -1,6 +1,6 @@
 <template>
     <div class="form-wrapper">
-        <h2 style="text-align: center;">添加用户</h2>
+        <h2 style="text-align: center;">新增用户</h2>
         <el-form :model="rulesForm" ref='adduserForm' status-icon :rules='rules' label-position="right" label-width="80px">
             <el-form-item label="用户名" required prop="username">
                 <el-input name="username" v-model="rulesForm.username" ref="username" placeholder="请输入用户名"></el-input>

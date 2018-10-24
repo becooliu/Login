@@ -4,68 +4,14 @@
 		<el-header v-if="getLoginStatus">
 			<el-row>
 				<!--顶部导航-->
-				<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-					<el-menu-item index="1">处理中心</el-menu-item>
-					<el-submenu index="2">
-						<template slot="title">我的工作台</template>
-						<el-menu-item index="2-1">选项1</el-menu-item>
-						<el-menu-item index="2-2">选项2</el-menu-item>
-						<el-menu-item index="2-3">选项3</el-menu-item>
-						<el-submenu index="2-4">
-						<template slot="title">选项4</template>
-						<el-menu-item index="2-4-1">选项1</el-menu-item>
-						<el-menu-item index="2-4-2">选项2</el-menu-item>
-						<el-menu-item index="2-4-3">选项3</el-menu-item>
-						</el-submenu>
-					</el-submenu>
-					<el-menu-item index="3" disabled>消息中心</el-menu-item>
-					<el-menu-item index="4">
-						<a href="javascript:void(0);" target="_blank">订单管理</a>
-					</el-menu-item>
-					<el-menu-item index="5">
-						<el-button size="small" @click="logout">退出登录</el-button>
-					</el-menu-item>
-				</el-menu>
+				<Header/>
 				<!--顶部导航 end-->
 			</el-row>
 		</el-header>
 		<el-container>
-			<el-aside width="200px">
+			<el-aside v-if="getLoginStatus" width="200px">
 				<!-- 侧导航 -->
-				<el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-					<el-submenu index="1">
-						<template slot="title">
-							<i class="el-icon-location"></i>
-							<span>用户管理</span>
-						</template>
-						<el-menu-item-group>
-							
-							<el-menu-item index="1-1">
-								<router-link :to='{name: "AddUser"}'>新增用户</router-link></el-menu-item>
-							<el-menu-item index="1-2">
-								<router-link :to='{name: "Reset"}'>密码修改</router-link></el-menu-item>
-						</el-menu-item-group>
-						<el-menu-item-group title="分组2">
-							<el-menu-item index="1-3">选项3</el-menu-item>
-						</el-menu-item-group>
-						<el-submenu index="1-4">
-							<template slot="title">选项4</template>
-							<el-menu-item index="1-4-1">选项1</el-menu-item>
-						</el-submenu>
-					</el-submenu>
-					<el-menu-item index="2">
-						<i class="el-icon-menu"></i>
-						<span slot="title">导航二</span>
-					</el-menu-item>
-					<el-menu-item index="3" disabled>
-						<i class="el-icon-document"></i>
-						<span slot="title">导航三</span>
-					</el-menu-item>
-					<el-menu-item index="4">
-						<i class="el-icon-setting"></i>
-						<span slot="title">导航四</span>
-					</el-menu-item>
-				</el-menu>
+				<Aside/>
 				<!-- 侧导航end -->
 			</el-aside>
 			<el-container>
@@ -77,8 +23,10 @@
 							</keep-alive>
 						</transition>
 					</el-row>
+					<!--footer-->
+						<Footer/>
+					<!--footer end-->
 				</el-main>
-				<el-footer class="text-center">&copy;Becoo All Rights Reserved.</el-footer>
 			</el-container>
 		</el-container>
 	</el-container>
@@ -86,64 +34,29 @@
 </template>
 
 <script>
+import Header from "@/components/nav/Header.vue";
+import Aside from '@/components/nav/Aside';
+import Footer from '@/components/nav/Footer';
+
 export default {
-  name: "App",
-  data() {
-    return {
-	  isLogin: false,
-	  activeIndex: '1'
-    };
-  },
-  computed: {
-    getLoginStatus() {
-      return this.$store.getters.getStorage;
-    }
-  },
-  methods: {
-    checkIsLogin() {
-      /* if(this.$store.getters.getStorage) (
-        console.log('')
-      ) */
-      /* if(this.getCookie('userSession')){
-        this.isLogin = true
-      } */
-    },
-    getCookie(name) {
-      var arr = document.cookie.match(
-        new RegExp("(^| )" + name + "=([^;]*)(;|$)")
-      );
-      if (arr != null) {
-        return unescape(arr[2]);
-      }
-      return null;
-    },
-    delCookie(name) {
-      var exp = new Date();
-      exp.setTime(exp.getTime() - 1);
-      var cval = this.getCookie(name);
-      if (cval != null)
-        document.cookie =
-          name + "=" + cval + ";path=/;expires=" + exp.toGMTString();
-    },
-    logout() {
-      this.delCookie("userSession");
-      this.$router.push({ name: "Login" });
-      this.$store.commit("$_removeStorage");
-      this.isLogin = false;
+	name: "App",
+	components: {
+		Header,
+		Aside,
+		Footer
 	},
-	handleSelect(key,keyPath) {
-		console.log(key , keyPath)
+	data() {
+		return {
+			isLogin: false
+		};
 	},
-	handleOpen(key, keyPath) {
-		console.log(key , keyPath)
+	computed: {
+		getLoginStatus() {
+			return this.$store.getters.getStorage;
+		}
 	},
-	handleClose(key, keyPath) {
-		console.log(key , keyPath)
+	methods: {
 	}
-  } /* ,
-  mounted() {
-    this.checkIsLogin();
-  }, */
 };
 </script>
 
@@ -291,10 +204,10 @@ a {
 
 /*element-ui*/
 .el-aside {
-	margin-top: 30px;
+  margin-top: 30px;
 }
 .el-aside .el-menu-item a {
-	color: #fff;
+  color: #fff;
 }
 /*element-ui end*/
 /* #app {
