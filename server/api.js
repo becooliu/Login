@@ -199,11 +199,15 @@ router.post('/api/sysadmin/adduser', (req , res) => {
 //管理员查询用户
 router.get('/api/sysadmin/getuser/:username' , (req, res) => {
     let userData = req.params;
-    //console.log(req.params.username);
-    //console.log(userData.username);
-    //res.json(userData);
 
-    models.login.findOne(userData ,{username: 1, isAdmin: 1}, (err, userdata) => {
+    /* console.log(req.params.username);
+    console.log(userData.username);
+    res.json(userData); */
+
+    //使用正则定义模糊查询字符串规则
+    const reg = new RegExp(userData.username,'i');
+    models.login.find({username: {$regex: reg}} , {username: 1, isAdmin: 1}, (err , userdata) =>{
+    //models.login.findOne(userData ,{username: 1, isAdmin: 1}, (err, userdata) => {
         if( err) {
             responseData = {
                 code: 'error',

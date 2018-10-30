@@ -53,17 +53,19 @@
                         if(resdata.code == 'success') {
                             this.$message.success('查询成功');
                         }
-                        resdata.data.isAdmin == true 
-                        ? resdata.data.ADMIN = '是' 
-                        : resdata.data.ADMIN = '否'
-                        this.resUserInfo.push(resdata.data);
-                        console.log(this.resUserInfo);
+                        //遍历后台返回的数据，将true/false 替换为是/否
+                        for (var i = 0; i< resdata.data.length; i++) {
+                            resdata.data[i].isAdmin == true
+                            ? resdata.data[i].ADMIN = '是'
+                            : resdata.data[i].ADMIN = '否';
+                            this.resUserInfo.push(resdata.data[i]); //将遍历后的数据保存到新的数组中
+                        }
                         
                     }).catch(error => {
                         this.$message.error('用户查询失败，请稍后重试。')
                     })
                 }
-                this.resUserInfo = [];
+                this.resUserInfo = []; //每次查询完后，将保存数据的数组清空，避免数据叠加
             }
         },
         computed: {
