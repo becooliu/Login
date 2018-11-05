@@ -50,8 +50,12 @@
                     this.$http.get('/api/sysadmin/getuser/'+searchStr)
                     .then(res => {
                         let resdata = res.body;
+                        if(resdata.code == 'no-data') {
+                            this.$message.info(resdata.message);
+                            return;
+                        }
                         if(resdata.code == 'success') {
-                            this.$message.success('查询成功');
+                            this.$message.success(resdata.message);
                         }
                         //遍历后台返回的数据，将true/false 替换为是/否
                         for (var i = 0; i< resdata.data.length; i++) {

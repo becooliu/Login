@@ -214,10 +214,17 @@ router.get('/api/sysadmin/getuser/:username' , (req, res) => {
                 message: '数据查询失败，请稍后再试。'
             }
         }else {
-            responseData = {
-                code: 'success',
-                message: '查询成功',
-                data: userdata
+            if( userdata.length > 0) {
+                responseData = {
+                    code: 'success',
+                    message: '查询成功',
+                    data: userdata
+                }
+            }else {
+                responseData = {
+                    code: 'no-data',
+                    message: '未找到相似数据，请重新输入查询关键字。'
+                }
             }
         }
         res.json(responseData);
