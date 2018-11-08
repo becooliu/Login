@@ -83,8 +83,10 @@ export default {
                 break;
               case "2":
                 this.setCookie("userSession", this.username, 1);
+                console.log(res.body.token);
                 //登录成功，修改state及写入localStorage
                 this.$store.commit('$_setStorage',this.username); 
+                this.$store.commit('$_setTokenStorage', res.body.token);
                 //localStorage.username = this.username;
                 this.$router.push({ name: "UserInfo" });
                 break;

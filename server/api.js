@@ -5,6 +5,10 @@ const models = require('./db');
 const express = require('express');
 const router = express.Router();
 
+//引用jwt 并声明加密key 的密钥
+const jwt = require('jsonwebtoken');
+const secretOrPrivateKey = 'usertoken'; //加密key的密钥
+
 var responseData = {}; //统一的返回数据
 
 //node 中图片的接收
@@ -64,20 +68,31 @@ router.post('/api/login/getAccount' , (req , res) => {
             res.json(responseData);
         }else if(data) {
             //console.log(data);
-
             let loginAccount = {
                 username: req.body.username,
                 password: req.body.password
             }
             if(loginAccount.username == data.username && loginAccount.password == data.password) {
-                /* responseData.code = "2";
-                responseData.message = "登录成功"; */
+                let content = {username: loginAccount.username};
                 
-                responseData = {
-                    code: "2",
-                    message: "登录成功。"
-                }
-                res.json(responseData);
+                //loginAccount.username 为要生成的token的主题信息
+                let token = jwt.sign(content, secretOrPrivateKey, {expiresIn : 60*60*1}) //1小时后过期
+                
+                let condition = {$set: {"token": token}}
+                models.login.update(content, condition , function(err) {
+                    if(err) {
+                        res.send(err);
+                        return
+                    }
+                    responseData = {
+                        code: '2',
+                        message: '登录成功',
+                        'token': token,
+                        'username': loginAccount.username
+                    }
+                    res.json(responseData);
+                })
+                
             }else {
                 responseData.code = "3";
                 responseData.message = "帐号或密码错误，请确认。"
@@ -228,6 +243,33 @@ router.get('/api/sysadmin/getuser/:username' , (req, res) => {
             }
         }
         res.json(responseData);
+    })
+})
+
+//检查token
+router.post('/api/admin/checktoken' , (req, res) => {
+    const reqdata = {
+        username: req.body.username,
+        token: req.body.token
+    }
+    models.login.find(reqdata, (err,userdata) => {
+        if( err ) {
+            res.send(err);
+            return
+        }
+        if(userdata) {
+            let token = req.body.token;
+            jwt.verify(token,secretOrPrivateKey, (err, decode) => {
+                if( err ) { //  时间失效的时候/ 伪造的token
+                    res.send({"status":'disable'});
+                    return;
+                }else {
+                    res.send({'status': 'enable'})
+                }
+            })
+        }else {
+            res.send({'status': 'disable'})
+        }
     })
 })
 

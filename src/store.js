@@ -11,6 +11,7 @@ const store = new Vuex.Store({
         domain: 'http://test.example.com',
         isLogin: false, //是否登录的状态
         username: null,
+        token: '',
         userInfo: {
             nick: null,
             ulevel: null,
@@ -41,11 +42,9 @@ const store = new Vuex.Store({
         updateUserInfo(state,newUserInfo) {
             state.userInfo = newUserInfo;
         },
-        GETUSERINFO(state){
-            //this.$http.get('/api/uploadImg/postImg')
-            /* this.$http.get('/static/data/userInfo.json').then(function(res){
-                console.log(res.data.nick);
-            }) */
+        $_setTokenStorage(state,value) {
+            state.token = value;
+            localStorage.setItem('token',value);
         }
     },
     actions: {

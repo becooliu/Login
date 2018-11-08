@@ -8,6 +8,9 @@ import '../static/el-icon-ali.css'
 import App from './App'
 import VueResource from 'vue-resource'
 import router from './router'
+//引入jsonwebtoken
+import jwt from 'jsonwebtoken'
+
 //import  './assets/bootstrap-3.3.7-dist/css/bootstrap.min.css'
 import Login from '../src/components/Login.vue'
 import UserInfo from '../src/components/UserInfo.vue'
@@ -99,6 +102,11 @@ Vue.prototype.getCookie = function (name) {
   }
   return null;
 
+}
+
+//设置localStorage
+Vue.prototype.setTokenLocalStorage = function(token) {
+  localStorage.setItem('token', token)
 }
 
 //删除cookie

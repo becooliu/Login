@@ -1,5 +1,6 @@
 <template>
     <div class="search-box">
+        <h2 style="text-align: center;">查找用户</h2>
         <el-input type="text" width="320px" v-model="searchString"   v-on:keyup.enter.native="findUser" placeholder="请输入查询用户名">
             <el-button slot="append" icon="el-icon-search" @click="findUser">查询</el-button>
         </el-input>

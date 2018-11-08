@@ -13,6 +13,7 @@ const loginSchema = mongoose.Schema({
     username: String,
     password: String,
     avatar: String,
+    token: String,
     isAdmin: {
         type: Boolean,
         default: false
