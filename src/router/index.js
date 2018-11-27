@@ -10,7 +10,7 @@ import FindUser from '../components/sysadmin/FindUser.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const vueRouter = new Router({
   routes: [
     {
       path: '/',
@@ -25,7 +25,10 @@ export default new Router({
     {
       path: '/userInfo',
       name: 'UserInfo',
-      component: UserInfo
+      component: UserInfo,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: '/register',
@@ -40,7 +43,10 @@ export default new Router({
     {
       path: '/reset',
       name: 'Reset',
-      component: Reset
+      component: Reset,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: '/sysadmin/adduser',
@@ -50,7 +56,31 @@ export default new Router({
     {
       path: '/sysadmin/finduser',
       name: 'FindUser',
-      component: FindUser
+      component: FindUser,
+      meta: {
+        requireAuth: true
+      }
     }
   ]
 })
+
+//前端路由检查访问的页面是否需要用户登录。
+vueRouter.beforeEach((to, from , next) => {
+  if(to.matched.some(record => record.meta.requireAuth)) {
+    if(!localStorage.getItem('user')) {
+      vueRouter.push({
+        name: 'Login'
+      })
+    }else {
+      next();
+    }
+  }else {
+    next()
+  }
+})
+
+export default vueRouter
+/* export default {
+  name: router,
+  routers: vueRouter
+} */
