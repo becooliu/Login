@@ -1,5 +1,8 @@
 <template>
     <div class="reset-wrapper">
+        <div class="panel_header">
+            <h2 class="text-center">修改密码</h2>
+        </div>
         <el-form :model="rulesForm" ref="resetform" lable-position="right" status-icon :rules="rules" label-width="80px">
             <el-form-item label="新密码" required prop="password1">
                 <el-input name="password1" type="password" v-model="rulesForm.password1"></el-input>
