@@ -1,35 +1,30 @@
 <template>
   <div id="app">
-	<el-container>
 		<el-header v-if="getLoginStatus">
-			<el-row>
 				<!--顶部导航-->
 				<Header/>
 				<!--顶部导航 end-->
-			</el-row>
 		</el-header>
+
 		<el-container>
 			<el-aside v-if="getLoginStatus" width="200px">
 				<!-- 侧导航 -->
 				<Aside/>
 				<!-- 侧导航end -->
 			</el-aside>
-			<el-container>
-				<el-main>
-					<el-row>
-						<transition name="fade">
-							<keep-alive>
-								<router-view/>
-							</keep-alive>
-						</transition>
-					</el-row>
-					<!--footer-->
-						<Footer/>
-					<!--footer end-->
-				</el-main>
-			</el-container>
+      <el-main>
+        <el-row>
+          <transition name="fade">
+            <keep-alive>
+              <router-view/>
+            </keep-alive>
+          </transition>
+        </el-row>
+        <!--footer-->
+          <Footer/>
+        <!--footer end-->
+      </el-main>
 		</el-container>
-	</el-container>
   </div>
 </template>
 
