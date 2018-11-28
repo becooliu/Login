@@ -47,11 +47,16 @@ const vm = new Vue({
     }
   },
 
+
   /* watch: {
     "$route": "checkLogin"
   } */
 })
-
+Vue.http.interceptors.push((request, next) => {
+  if(request.url != '/login' || request.url != '/register') {
+    request.headers.set("token", localStorage.getItem('token'))
+  }
+})
 /*router.beforeEach((to, from, next) => {
   //是否登录
   let isLogin = function(){

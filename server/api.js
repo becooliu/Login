@@ -9,6 +9,8 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const secretOrPrivateKey = 'usertoken'; //加密key的密钥
 
+const jwtUtil = require('./jwt');
+
 var responseData = {}; //统一的返回数据
 
 //node 中图片的接收
@@ -76,8 +78,7 @@ router.post('/api/login/getAccount' , (req , res) => {
                 let content = {username: loginAccount.username};
                 
                 //loginAccount.username 为要生成的token的主题信息
-                let token = jwt.sign(content, secretOrPrivateKey, {expiresIn : 60*60*1}) //1小时后过期
-                
+                /* let token = jwt.sign(content, secretOrPrivateKey, {expiresIn : 60*60*1}) //1小时后过期
                 let condition = {$set: {"token": token}}
                 models.login.update(content, condition , function(err) {
                     if(err) {
@@ -91,7 +92,19 @@ router.post('/api/login/getAccount' , (req , res) => {
                         'username': loginAccount.username
                     }
                     res.json(responseData);
-                })
+                }) */
+                //修改begin
+                let jwt = new jwtUtil(content);
+                let token = jwt.generateToken();
+                responseData = {
+                    code: '2',
+                    message: '登录成功',
+                    'token': token,
+                    'username': loginAccount.username
+                }
+                res.json(responseData);
+                //修改end
+                
                 
             }else {
                 responseData.code = "3";
