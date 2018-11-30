@@ -98,6 +98,9 @@ export default {
               case "4":
                 window.alert("帐号不存在，请确认。");
                 break;
+              case 'token_error':
+                this.$message.error(res.body.message)
+                break;
               default:
                 window.alert("登录失败");
             }

@@ -14,8 +14,6 @@ import jwt from 'jsonwebtoken'
 //import  './assets/bootstrap-3.3.7-dist/css/bootstrap.min.css'
 import Login from '../src/components/Login.vue'
 import UserInfo from '../src/components/UserInfo.vue'
-import Register from '../src/components/Register.vue'
-import PostImg from '../src/components/PostImg.vue'
 
 import store from './store.js'
 
@@ -42,18 +40,21 @@ const vm = new Vue({
           name: "Login"
         });
       } else {
-        this.$router.push('/user_info');
+        this.$router.push({
+          name: "UserInfo"
+        });
       }
     }
   },
 
 
-  /* watch: {
+  /* watch: { 
     "$route": "checkLogin"
   } */
 })
 Vue.http.interceptors.push((request, next) => {
-  if(request.url != '/login' || request.url != '/register') {
+  if(request.url != '/api/login/getAccount' && request.url != '/api/login/resetpass') {
+    console.log(request.url);
     request.headers.set("token", localStorage.getItem('token'))
   }
 })

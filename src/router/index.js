@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { Message } from 'element-ui';
 import Login from '../components/Login.vue'
 import UserInfo from '../components/UserInfo.vue'
 import Register from '../components/Register.vue'
@@ -9,6 +10,7 @@ import AddUser from '../components/sysadmin/AddUser.vue'
 import FindUser from '../components/sysadmin/FindUser.vue'
 
 Vue.use(Router)
+//Vue.use(ElementUI)
 
 const vueRouter = new Router({
   routes: [
@@ -68,6 +70,7 @@ const vueRouter = new Router({
 vueRouter.beforeEach((to, from , next) => {
   if(to.matched.some(record => record.meta.requireAuth)) {
     if(!localStorage.getItem('user')) {
+      Message.warning('请先登录');
       vueRouter.push({
         name: 'Login'
       })

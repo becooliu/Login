@@ -50,7 +50,13 @@
                 if(searchStr !='' && searchStr != 'null' && searchStr != "undefined") {
                     this.$http.get('/api/sysadmin/getuser/'+searchStr)
                     .then(res => {
+                        console.log("res="+res.length);
                         let resdata = res.body;
+                        //非法的token
+                        if(resdata.code == 'token_error') {
+                            this.$message.error(resdata.message);
+                            return;
+                        }
                         if(resdata.code == 'no-data') {
                             this.$message.info(resdata.message);
                             return;
@@ -58,6 +64,7 @@
                         if(resdata.code == 'success') {
                             this.$message.success(resdata.message);
                         }
+                        console.log(resdata);
                         //遍历后台返回的数据，将true/false 替换为是/否
                         for (var i = 0; i< resdata.data.length; i++) {
                             resdata.data[i].isAdmin == true
@@ -67,6 +74,7 @@
                         }
                         
                     }).catch(error => {
+                        console.log(error);
                         this.$message.error('用户查询失败，请稍后重试。')
                     })
                 }

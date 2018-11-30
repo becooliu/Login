@@ -8,13 +8,31 @@ const router = express.Router();
 //引用jwt 并声明加密key 的密钥
 const jwt = require('jsonwebtoken');
 const secretOrPrivateKey = 'usertoken'; //加密key的密钥
-
 const jwtUtil = require('./jwt');
 
 var responseData = {}; //统一的返回数据
 
-//node 中图片的接收
-
+//对所有访问（除了登录、注册和重设密码）进行token 验证
+router.use(function(req, res, next) {
+    if(req.url != '/api/login/getAccount' && req.url != '/api/resetpass') {
+        //验证token
+        let token = req.headers.token || req.body.token || req.query.token;
+        
+        let verify_token = new jwtUtil(token);
+        let verify_result = verify_token.verifyToken();
+        if(verify_result.code == 'token_error') {
+            responseData = {
+                code: verify_result.code,
+                message: verify_result.message
+            }
+            res.json(responseData);
+        }else {
+            next()
+        }
+    }else {
+        next();
+    }
+})
 
 /************** 创建(create) 读取(get) 更新(update) 删除(delete) **************/
 
@@ -104,8 +122,6 @@ router.post('/api/login/getAccount' , (req , res) => {
                 }
                 res.json(responseData);
                 //修改end
-                
-                
             }else {
                 responseData.code = "3";
                 responseData.message = "帐号或密码错误，请确认。"
@@ -124,6 +140,7 @@ router.post('/api/login/getAccount' , (req , res) => {
 router.post('/api/uploadImg/postImg' , (req, res) => {
     let avatar = req.files.avatar; //获取前端上传的文件对象
     let userName = req.body.userSession;
+    
     // console.log('avatar='+req.files.avatar);
     // console.log('avatar.name='+req.files.avatar.name);
     
@@ -260,7 +277,7 @@ router.get('/api/sysadmin/getuser/:username' , (req, res) => {
 })
 
 //检查token
-router.post('/api/admin/checktoken' , (req, res) => {
+/* router.post('/api/admin/checktoken' , (req, res) => {
     const reqdata = {
         username: req.body.username,
         token: req.body.token
@@ -284,6 +301,6 @@ router.post('/api/admin/checktoken' , (req, res) => {
             res.send({'status': 'disable'})
         }
     })
-})
+}) */
 
 module.exports = router;

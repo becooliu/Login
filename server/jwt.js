@@ -1,14 +1,15 @@
 const jwt = require('jsonwebtoken')
 const secretOrPrivateKey = 'usertoken'
 
+//定义生成、校验token的类
 class Jwt{
     constructor(data) {
         this.data = data;
     }
     //生成token
     generateToken(){
-        let created = Math.floor(Date.now() / 1000);
-        let token = jwt.sign(this.data, secretOrPrivateKey, {expiresIn: created + 60*60 });
+        //let created = Math.floor(Date.now() / 1000);
+        let token = jwt.sign(this.data, secretOrPrivateKey, {expiresIn: '45s' });
         return token;
     }
 
@@ -16,16 +17,16 @@ class Jwt{
     verifyToken() {
         let token = this.data;
         let res;
-        try {
-            let result = jwt.verify(token,secretOrPrivateKey);
-            let current = Math.floor(Date.now() / 1000);
-            let {exp = 0} = result;
-            if(current <= exp) {
-                res = result.data || {};
+        jwt.verify(token,secretOrPrivateKey, function(err, decode) {
+            if (err) {
+                res = {
+                    code: 'token_error',
+                    message: '不合法的token,或者token 已过期，请重新登录。'
+                }
+            }else {
+                res = decode
             }
-        }catch(e) {
-            return e
-        }
+        })
         return res
     }
 }

@@ -32,15 +32,19 @@ app.use(express.static(path.resolve(__dirname, '../public/Uploads/images')));
 
 //允许跨域访问
 app.use("*", function (req, res, next) {
+    res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin', '*');
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+    res.header('Content-Type' , 'Application/json; charset=utf-8');
+    next()
     if (req.method === 'OPTIONS') {
       res.send(200)
     } else {
       next()
     }
   });
+  
 
 app.listen(8088);
 console.log('success listen ......');
