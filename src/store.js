@@ -12,6 +12,7 @@ const store = new Vuex.Store({
         isLogin: false, //是否登录的状态
         username: null,
         token: '',
+        tokenStatus: 'invalid',
         userInfo: {
             nick: null,
             ulevel: null,
@@ -28,6 +29,9 @@ const store = new Vuex.Store({
         },
         getLoginStatus(){
             return state.isLogin;
+        },
+        getTokenStatus(state){
+            return state.tokenStatus;
         }
     },
     mutations: {
@@ -45,6 +49,9 @@ const store = new Vuex.Store({
         $_setTokenStorage(state,value) {
             state.token = value;
             localStorage.setItem('token',value);
+        },
+        $_updateTokenStatus(state,value) {
+            state.tokenStatus = value;
         }
     },
     actions: {

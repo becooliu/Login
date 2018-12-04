@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-		<el-header v-if="getLoginStatus">
+		<el-header v-if="getLoginStatus && tokenValid =='valid'">
 				<!--顶部导航-->
 				<Header/>
 				<!--顶部导航 end-->
 		</el-header>
 
 		<el-container>
-			<el-aside v-if="getLoginStatus" width="200px">
+			<el-aside v-if="getLoginStatus && tokenValid =='valid'" width="200px">
 				<!-- 侧导航 -->
 				<Aside/>
 				<!-- 侧导航end -->
@@ -34,7 +34,7 @@ import Aside from '@/components/nav/Aside';
 import Footer from '@/components/nav/Footer';
 
 export default {
-	name: "App",
+  name: "App",
 	components: {
 		Header,
 		Aside,
@@ -48,10 +48,13 @@ export default {
 	computed: {
 		getLoginStatus() {
 			return this.$store.getters.getStorage;
-		}
+    },
+    tokenValid(){ //检查token 是否非法
+      return this.$store.getters.getTokenStatus
+    }
 	},
 	methods: {
-	}
+  }
 };
 </script>
 

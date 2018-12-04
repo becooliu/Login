@@ -134,6 +134,11 @@ export default {
 					type: 'success'
 				})
 			})
+			.catch(error=> {
+				if(this.$store.getters.getTokenStatus === 'invalid') {
+					this.checkToken();
+				}
+			})
 		}
 	},
 	mounted() {

@@ -12,6 +12,9 @@
                 <el-menu-item index="1-2">
                     <router-link :to='{name: "FindUser"}'><i class="el-icon-ali-search"></i>查找用户</router-link>
                 </el-menu-item>
+                <el-menu-item index="1-3">
+                    <router-link :to='{name: "UserInfo"}'><i class="el-icon-info"></i>用户信息</router-link>
+                </el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="分组2">
                 <el-menu-item index="1-3">选项3</el-menu-item>

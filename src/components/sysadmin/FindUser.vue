@@ -47,16 +47,17 @@
             },
             findUser(){ //查询用户,
                 let searchStr = this.searchString.trim().toLowerCase();
+                
                 if(searchStr !='' && searchStr != 'null' && searchStr != "undefined") {
                     this.$http.get('/api/sysadmin/getuser/'+searchStr)
                     .then(res => {
-                        console.log("res="+res.length);
-                        let resdata = res.body;
+                        let resdata = res.body || {};
+                        //console.log(resdata);
                         //非法的token
-                        if(resdata.code == 'token_error') {
+                        /* if(resdata.code == 'token_error') {
                             this.$message.error(resdata.message);
                             return;
-                        }
+                        } */
                         if(resdata.code == 'no-data') {
                             this.$message.info(resdata.message);
                             return;
@@ -74,8 +75,12 @@
                         }
                         
                     }).catch(error => {
-                        console.log(error);
-                        this.$message.error('用户查询失败，请稍后重试。')
+                        if(error.body.code === 'token_error') {
+                            this.checkToken();
+                        }else {
+                            this.$message.error('用户查询失败，请稍后重试。')
+
+                        }
                     })
                 }
                 this.resUserInfo = []; //每次查询完后，将保存数据的数组清空，避免数据叠加

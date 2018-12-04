@@ -11,7 +11,6 @@ import router from './router'
 //引入jsonwebtoken
 import jwt from 'jsonwebtoken'
 
-//import  './assets/bootstrap-3.3.7-dist/css/bootstrap.min.css'
 import Login from '../src/components/Login.vue'
 import UserInfo from '../src/components/UserInfo.vue'
 
@@ -45,19 +44,53 @@ const vm = new Vue({
         });
       }
     }
-  },
-
-
-  /* watch: { 
-    "$route": "checkLogin"
-  } */
-})
-Vue.http.interceptors.push((request, next) => {
-  if(request.url != '/api/login/getAccount' && request.url != '/api/login/resetpass') {
-    console.log(request.url);
-    request.headers.set("token", localStorage.getItem('token'))
   }
 })
+
+Vue.http.interceptors.push((request, next) => {
+  if(request.url != '/api/login/getAccount' && request.url != '/api/login/resetpass') {
+    //console.log(request.url);
+
+    request.headers.set("token", localStorage.getItem('token'));
+    /* return (response => {
+      if(response.body.code == 'token_error') {
+        return request.respondWith(body, {
+          code: response.body.code,
+          message: response.body.message
+        })
+      }
+    }) */
+    next(response => {
+      if(response.body.code == 'token_error') {
+        //parent.location.href = "/login"
+        store.commit('$_updateTokenStatus', 'invalid');
+        return request.respondWith({
+          code: response.body.code,
+          message: response.body.message
+        })
+      }
+    });
+  }else {
+    next();
+  }
+})
+
+Vue.prototype.checkToken = function(){
+  if(this.$store.getters.getTokenStatus == 'invalid') {
+    this.$confirm('检测到非法的token，或token已过期。', '验证token失败', {
+      distinguishCancelAndClose: true,
+      confirmButtonText: '去登录',
+      cancleButtonText: '留在当前页面',
+    }).then(()=> {
+      this.$router.push({
+        name: 'Login'
+      })
+      return;
+    }).catch(()=> {
+      return;
+    })
+  }
+}
 /*router.beforeEach((to, from, next) => {
   //是否登录
   let isLogin = function(){

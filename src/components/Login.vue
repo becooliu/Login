@@ -87,6 +87,7 @@ export default {
                 //登录成功，修改state及写入localStorage
                 this.$store.commit('$_setStorage',this.username); 
                 this.$store.commit('$_setTokenStorage', res.body.token);
+                this.$store.commit('$_updateTokenStatus', 'valid');
                 //localStorage.username = this.username;
                 this.$router.push({ name: "UserInfo" });
                 break;
