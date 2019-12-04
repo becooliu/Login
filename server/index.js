@@ -1,5 +1,6 @@
 //引入编写好的api
 const api = require('./api')
+const uploadPoster = require('./uploadPoster') //上传头像
 //引入上传文件
 //const postImg = require('./uploadImg')
 //引入文件模块
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 //app.use(express.bodyParser({uploadDir: '../public/Uploads/images'}));
 app.use(api);
+app.use(uploadPoster);
 //app.use(postImg);
 //app.use(bodyParser({uploadDir: '../public/Uploads/images'}));
 

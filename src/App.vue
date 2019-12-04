@@ -2,7 +2,9 @@
   <div id="app">
     <el-row>
       <div class="log-out" v-if="getLoginStatus">
-        <el-button @click="logout">退出登录</el-button>
+        <!-- 顶部菜单 -->
+        <Menu></Menu>
+        <!-- <el-button @click="logout">退出登录</el-button> -->
       </div>
     </el-row>
     <el-row>
@@ -27,8 +29,13 @@
 </template>
 
 <script>
+import Menu from "./components/public/Menu";
+
 export default {
   name: "App",
+  components: {
+    Menu
+  },
   data(){
     return {
       isLogin: false

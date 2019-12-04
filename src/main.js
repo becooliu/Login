@@ -12,6 +12,7 @@ import Login from '../src/components/Login.vue'
 import UserInfo from '../src/components/UserInfo.vue'
 import Register from '../src/components/Register.vue'
 import PostImg from '../src/components/PostImg.vue'
+import Menu from '../src/components/public/Menu.vue'
 
 import store from './store.js'
 
@@ -77,7 +78,9 @@ Vue.prototype.delCookie = function (name) {
   if (cval != null)
     document.cookie = name + "=" + cval + ";path=/;expires=" + exp.toGMTString();
 }
-
+Vue.prototype.getUserInfo = function() { //获取用户名
+  return this.getCookie("userSession");
+}
 Vue.prototype.checkLogin = function () {
   console.log('check');
   if (this.getCookie('session') == null || this.getCookie('session') == '') {
