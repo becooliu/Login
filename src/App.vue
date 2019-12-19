@@ -47,14 +47,6 @@ export default {
     }
   },
   methods: {
-    checkIsLogin(){
-      /* if(this.$store.getters.getStorage) (
-        console.log('')
-      ) */
-      /* if(this.getCookie('userSession')){
-        this.isLogin = true
-      } */
-    },
     getCookie(name){
       var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"))
       if(arr != null) {
@@ -75,10 +67,7 @@ export default {
       this.$store.commit('$_removeStorage');
       this.isLogin = false;
     }
-  }/* ,
-  mounted() {
-    this.checkIsLogin();
-  }, */
+  }
 };
 </script>
 
@@ -224,4 +213,8 @@ a {
   color: #2c3e50;
   margin-top: 60px;
 } */
+
+.box {
+  margin-top: 20px;
+}
 </style>

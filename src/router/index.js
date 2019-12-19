@@ -4,6 +4,7 @@ import Login from '../components/Login.vue'
 import UserInfo from '../components/UserInfo.vue'
 import Register from '../components/Register.vue'
 import PostImg from '../components/PostImg.vue'
+import ChangePwd from "../components/ChangePwd"
 
 Vue.use(Router)
 
@@ -33,6 +34,11 @@ export default new Router({
       path: '/postimg',
       name: 'PostImg',
       component: PostImg
+    },
+    {
+      path: '/changePwd', //修改密码
+      name: 'ChangePwd',
+      component: ChangePwd
     }
   ]
 })

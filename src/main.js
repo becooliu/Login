@@ -78,9 +78,7 @@ Vue.prototype.delCookie = function (name) {
   if (cval != null)
     document.cookie = name + "=" + cval + ";path=/;expires=" + exp.toGMTString();
 }
-Vue.prototype.getUserInfo = function() { //获取用户名
-  return this.getCookie("userSession");
-}
+
 Vue.prototype.checkLogin = function () {
   console.log('check');
   if (this.getCookie('session') == null || this.getCookie('session') == '') {
@@ -100,4 +98,52 @@ Vue.prototype.IsMobile = function (m) {
 Vue.prototype.IsEmail = function(email){
 var p = /\s*\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*\s*/;
 return p.test(email);
+}
+
+Vue.onBeforeUnload = function (event){
+  var clientBrowser = this.chargeBrowser();
+  var isIE = document.all?true:false;//另一方法
+  var evt = event ? event : (window.event ? window.event : null);
+  if(clientBrowser=="IE"){
+      var n = evt.screenX - window.screenLeft;
+      var b = n > document.documentElement.scrollWidth - 20;
+      if(b && evt.clientY < 0 || evt.altKey){
+          console.log("IE关闭非刷新");
+          return confirm("您确定要离开系统么？IE关闭非刷新");
+      }else{
+          console.log("IE刷新非关闭");
+          return confirm("您确定要离开系统么？IE刷新非关闭");
+      }
+  }else if (clientBrowser==="Chrome") {
+      clearCookie();
+  }else{
+      if(document.documentElement.scrollWidth != 0){
+          console.log("FF刷新非关闭");
+          return confirm("您确定要离开系统么？FF刷新非关闭");
+      }else{
+          console.log("FF关闭非刷新");
+          return confirm("您确定要离开系统么？FF关闭非刷新");
+      }
+  }
+}
+Vue.chargeBrowser = function () {
+  var userAgent = navigator.userAgent;
+  var isOpera = userAgent.indexOf("Opera") > -1;
+  if (isOpera) {
+      return "Opera"
+  }else if(userAgent.indexOf("Firefox") > -1) {
+      return "Firefox";
+  }else if(userAgent.indexOf("Chrome") > -1){
+      return "Chrome";
+  }else if(userAgent.indexOf("Safari") > -1) {
+      return "Safari";
+  }else if(userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+      return "IE";
+  }else if(userAgent.indexOf("Trident") > -1) {
+      return "Edge";
+  }else if(userAgent.indexOf("QQ") > -1) {
+      return "QQ";
+  }else{
+      return "";
+  }
 }
