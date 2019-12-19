@@ -1,5 +1,10 @@
 //引入编写好的api
-const api = require('./api')
+//const api = require('./api')
+const create_account = require('./api/create_account')
+const user_login = require('./api/user_login')
+const change_avatar = require('./api/change_avatar')
+const change_password = require('./api/change_password')
+
 const uploadPoster = require('./uploadPoster') //上传头像
 //引入上传文件
 //const postImg = require('./uploadImg')
@@ -23,7 +28,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 //app.use(express.bodyParser({uploadDir: '../public/Uploads/images'}));
-app.use(api);
+//app.use(api);
+//使用api
+app.use(create_account);
+app.use(user_login);
+app.use(change_avatar);
+app.use(change_password);
+
 app.use(uploadPoster);
 //app.use(postImg);
 //app.use(bodyParser({uploadDir: '../public/Uploads/images'}));
